@@ -1,4 +1,4 @@
 ---
 # tasks file for cis-security
 
-- include: "roles/ansible-os-rhel8/tasks/CIS-{{ ansible_distribution }}-{{ ansible_distribution_major_version | replace(\"Evaluation\", \"\") }}.yml"
+- include: "roles/ansible-os-rhel8/tasks/CIS-RedHat-8.yml"
