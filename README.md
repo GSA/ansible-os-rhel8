@@ -1,6 +1,6 @@
-# Redhat 8 CIS Benchmark
+# Redhat 8 GSA Benchmark
 
-A role to implement Center for Internet Security (CIS) controls for RHEL 8. It is based on [cis-security](https://github.com/dsglaser/cis-security)
+This role configures Red Hat Enterprise Linux (RHEL) 8.0 machine to be GSA compliant. Level 1 and 2 profiles will be applied by default based on [RHEL 8.0 GSA Benchmarks](https://docs.google.com/spreadsheets/d/14q7seglcBihKqs6muSQlCllVvzDmVOjS7PY758iB0aM/edit#gid=884169645)
 
 ## Role Variables
 
