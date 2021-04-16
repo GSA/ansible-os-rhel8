@@ -8,12 +8,12 @@ There are many role variables defined in ``./defaults/main.yml``.
 
 **Hardening will be applied to the following configurations by default**:
 
-- General Configurations (Section 1)
-- Services Configurations (Section 2)
-- Network Configurations (Section 3)
-- Logging and Auditing Configurations (Section 4)
-- Access, Authentication and Authorization Configurations (Section 5)
-- System Maintenance Configurations (Section 6)
+- General Configurations
+- Services Configurations
+- Network Configurations
+- Logging and Auditing Configurations
+- Access, Authentication and Authorization Configurations
+- System Maintenance Configurations
 
 Above high level configurations and other fine-grained configurations can be enabled/disabled using variabled defined in in defaults/main.yml.
 
