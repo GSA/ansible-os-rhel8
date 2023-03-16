@@ -80,7 +80,8 @@
     dnf:
       name: unused_filesystems
       state: absent
-
+    ignore_errors: yes
+  
   - name: Add unused_filesystems to /etc/modprobe.d/CIS.conf
     lineinfile:
       dest: /etc/modprobe.d/CIS.conf
