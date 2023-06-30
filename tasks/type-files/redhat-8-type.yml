@@ -2288,7 +2288,7 @@
     replace:
       path: "{{ item }}"
       replace: "     umask {{ default_umask }}"
-      regexp: '^\s*umask\s*022'
+      regexp: '^\s*umask\s*027'
     loop:
       - /etc/bashrc
       - /etc/profile
