@@ -2044,6 +2044,18 @@
         when: ssh_log_level == "INFO" or ssh_log_level == "WARN"
         tags:
           - 5.2.5
+      
+      - name: 5.2.5 - Set verbose loglevel in sshd_config
+        lineinfile:
+          path: /etc/ssh/sshd_config
+          regexp: '^#?LogLevel'
+          line: 'LogLevel VERBOSE'
+          state: present
+          backrefs: yes
+        notify:
+          - restart sshd
+        tags:
+          - 5.2.5
 
       # Using replace with a replace argument of "" removes the selected
       #  text.
