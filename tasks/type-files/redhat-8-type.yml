@@ -2249,6 +2249,18 @@
         when: password_req_digit
     tags:
       - 5.4.1
+      
+      
+      - name: 5.4.1 - Add Minclass rule to pwquality.conf
+        lineinfile:
+          path: /etc/security/pwquality.conf
+          line: 'minclass = 4'
+          state: present
+          insertafter: '^#?minclass'
+    tags:
+      - 5.4.1
+
+      
 
   # Control 5.4.2, Ensure lockout for failed password attempts, requires file replacement
   # skipping
