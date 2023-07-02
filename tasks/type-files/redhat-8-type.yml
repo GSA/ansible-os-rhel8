@@ -1364,6 +1364,11 @@
           state: present
         notify: start firewalld # 3.4.2.1
 
+      - name: 3.4.2.1 - Enable Firewalld service
+        service:
+          name: firewalld
+          state: enabled
+
       - name: 3.4.2.2 - Disable iptables service
         service:
           name: iptables
