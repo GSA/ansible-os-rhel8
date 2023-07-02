@@ -2181,6 +2181,16 @@
         notify:  restart sshd
         tags:
           - 5.2.18
+      
+      - name: Add MaxSessions rule to sshd_config
+        lineinfile:
+          path: /etc/ssh/sshd_config
+          line: 'MaxSessions 4'
+          state: present
+          insertafter: '^#?UsePAM'
+        notify: restart sshd
+        tags:
+          - 5.2.19
 
       - name: 5.2.19 - Ensure system crypto policy isn't overriden in SSH
         lineinfile:
