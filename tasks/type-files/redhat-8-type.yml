@@ -2362,6 +2362,17 @@
       - /etc/profile
     tags:
       - 5.5.5
+  
+  - name: Add umask 027 to /etc/profile.d/*.sh files
+    lineinfile:
+      path: "{{ item }}"
+      line: "umask 027"
+      insertafter: EOF
+    with_fileglob:
+      - "/etc/profile.d/*.sh"
+    tags:
+      - 5.5.5
+   
 
   # 5.5.6,  Ensure root login is restricted to system console
   # not easily automatable because of the various TTYs on a machine
