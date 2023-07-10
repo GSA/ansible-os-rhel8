@@ -1741,6 +1741,12 @@
         notify: restart auditd
         tags:
           4.1.12
+      
+      - name: 4.1.2 - Ensure successful file system mounts are collected
+        shell: |
+          find /path/to/partition -xdev \( -perm -4000 -o -perm -2000 \) -type f | awk '{{print "-a always,exit -F path=" $1 " -F perm=x -F auid>='"$(awk '/^\s*UID_MIN/{print $2}' /etc/login.defs)"' -F auid!= -k privileged"}}' >> /etc/audit/rules.d/privileged.rules
+        tags:
+          4.1.12
 
       # Control 4.1.13 - Ensure use of privileged commands is collected, is machine dependent
       # skipping
