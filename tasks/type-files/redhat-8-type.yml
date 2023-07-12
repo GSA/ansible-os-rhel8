@@ -2336,29 +2336,29 @@
   # skipping
 
 
-  - name: Get custom profile directory
-    command: "authselect current | awk 'NR == 1 {print $3}' | grep custom/"
-    register: custom_profile
-    changed_when: false
-    tags:
-      - 5.4.2
+  #- name: Get custom profile directory
+  #  command: "authselect current | awk 'NR == 1 {print $3}' | grep custom/"
+  #  register: custom_profile
+  #  changed_when: false
+  #  tags:
+  #    - 5.4.2
   
-  - name: Update faillock configuration
-    command: >
-      CP={{ custom_profile.stdout }} && 
-      for FN in system-auth password-auth; do
-        [[ -n $CP ]] && PTF=/etc/authselect/$CP/$FN || PTF=/etc/authselect/$FN
-        [[ -n $(grep -E '^\s*auth\s+required\s+pam_faillock.so\s+.*deny=\S+\s*.*$' $PTF) ]] && sed -ri '/pam_faillock.so/s/deny=\S+/deny=5/g' $PTF || sed -ri 's/^\^\s*(auth\s+required\s+pam_faillock\.so\s+)(.*[^{}])(\{.*\}|)$/\1\2 deny=5 \3/' $PTF
-        [[ -n $(grep -E '^\s*auth\s+required\s+pam_faillock.so\s+.*unlock_time=\S+\s*.*$' $PTF) ]] && sed -ri '/pam_faillock.so/s/unlock_time=\S+/unlock_time=900/g' $PTF || sed -ri 's/^\s*(auth\s+required\s+pam_faillock\.so\s+)(.*[^{}])(\{.*\}|)$/\1\2 unlock_time=900 \3/' $PTF
-      done
-    when: custom_profile.stdout is defined
-    tags:
-      - 5.4.2
+  #- name: Update faillock configuration
+  #  command: >
+  #    CP={{ custom_profile.stdout }} && 
+  #    for FN in system-auth password-auth; do
+  #      [[ -n $CP ]] && PTF=/etc/authselect/$CP/$FN || PTF=/etc/authselect/$FN
+  #      [[ -n $(grep -E '^\s*auth\s+required\s+pam_faillock.so\s+.*deny=\S+\s*.*$' $PTF) ]] && sed -ri '/pam_faillock.so/s/deny=\S+/deny=5/g' $PTF || sed -ri 's/^\^\s*(auth\s+required\s+pam_faillock\.so\s+)(.*[^{}])(\{.*\}|)$/\1\2 deny=5 \3/' $PTF
+  #      [[ -n $(grep -E '^\s*auth\s+required\s+pam_faillock.so\s+.*unlock_time=\S+\s*.*$' $PTF) ]] && sed -ri '/pam_faillock.so/s/unlock_time=\S+/unlock_time=900/g' $PTF || sed -ri 's/^\s*(auth\s+required\s+pam_faillock\.so\s+)(.*[^{}])(\{.*\}|)$/\1\2 unlock_time=900 \3/' $PTF
+  #    done
+  #  when: custom_profile.stdout is defined
+  #  tags:
+  #    - 5.4.2
   
-  - name: Apply authselect changes
-    command: "authselect apply-changes"
-    tags:
-      - 5.4.2
+  #- name: Apply authselect changes
+  #  command: "authselect apply-changes"
+  #  tags:
+  #    - 5.4.2
   
   
   - name: 5.5.1.1 - Ensure password expiration is {{ password_expire_days }} days or less
