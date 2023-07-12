@@ -2449,7 +2449,7 @@
   - name: 5.5.5 - Ensure default user umask is 027 or more restrictive
     find:
       paths: /etc/profile.d/
-      patterns: "*.sh"
+      patterns: "*.*sh"
     register: found_files
     tags:
       - 5.5.5
