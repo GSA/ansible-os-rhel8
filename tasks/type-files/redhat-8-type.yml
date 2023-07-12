@@ -2436,17 +2436,34 @@
     tags:
       - 5.5.5
   
-  - name: Add umask 027 to /etc/profile.d/*.sh files
-    lineinfile:
-      path: "{{ item }}"
-      line: "umask 027"
-      insertafter: EOF
-    with_fileglob:
-      - "/etc/profile.d/*.sh"
+  #- name: Add umask 027 to /etc/profile.d/*.sh files
+  #  lineinfile:
+  #    path: "{{ item }}"
+  #    line: "umask 027"
+  #    insertafter: EOF
+  #  with_fileglob:
+  #    - "/etc/profile.d/*.sh"
+  #  tags:
+  #    - 5.5.5
+  
+  - name: 5.5.5 - Ensure default user umask is 027 or more restrictive
+    find:
+      paths: /etc/profile.d/
+      patterns: "*.sh"
+    register: found_files
     tags:
       - 5.5.5
-   
-
+  
+  - name: 5.5.5 - Ensure default user umask is 027 or more restrictive
+    lineinfile:
+      path: "{{ item.path }}"
+      line: "umask 027"
+    loop: "{{ found_files.files }}"
+    vars:
+      line_to_add: "umask 027"
+    tags:
+      - 5.5.5  
+  
   # 5.5.6,  Ensure root login is restricted to system console
   # not easily automatable because of the various TTYs on a machine
   # Manually verify that only physically secure TTYs are listed  in
