@@ -1702,7 +1702,13 @@
         notify: restart auditd
         tags:
           4.1.9
-
+      
+      - name: 4.1.10 - Ensure unsuccessful unauthorized file access attempts are collected
+        file:
+          path: /etc/audit/rules.d/access.rules
+          state: touch
+          mode: '0644'    
+      
       - name: 4.1.10 - Ensure unsuccessful unauthorized file access attempts are collected
         template:
           dest: /etc/audit/rules.d/bad-file-access.rules
