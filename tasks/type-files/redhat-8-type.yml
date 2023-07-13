@@ -1608,14 +1608,7 @@
           4.1.4
       
        
-      - name: Ensure login and logout events are collected
-        blockinfile:
-          path: /etc/audit/rules.d/audit.rules
-          block: |
-            -w /var/log/faillog -p wa -k logins
-            -w /var/log/lastlog -p wa -k logins
-        tags:
-          4.1.4
+      
           
       
       - name: 4.1.5 - Ensure session initiation information is collected
