@@ -240,6 +240,12 @@
       - name: 1.1.11 - Set/reset mount counter
         set_fact:
           mount_count: 0
+  
+  - name: 1.11 - Ensure system-wide crypto policy is FUTURE or FIPS
+    ansible.builtin.command:
+      cmd: update-crypto-policies --set FUTURE
+    tags:
+      - 1.11 
 
       # Examine the ansible_mounts variable which includes all of the system mounts
       #  on machine. Search for the appropriate mount information. If it exists,
