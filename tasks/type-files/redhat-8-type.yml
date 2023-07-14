@@ -1969,27 +1969,35 @@
       - name: Remove cron.deny
         ansible.builtin.command:
           cmd: rm /etc/cron.deny
+          ignore_errors: yes
       - name: Remove at.deny
         ansible.builtin.command:
           cmd: rm /etc/at.deny
+          ignore_errors: yes
       - name: Create cron.allow
         ansible.builtin.command:
           cmd: touch /etc/cron.allow
+          ignore_errors: yes
       - name: Create at.allow
         ansible.builtin.command:
           cmd: touch /etc/at.allow
+          ignore_errors: yes
       - name: Set permissions for cron.allow
         ansible.builtin.command:
           cmd: chmod og-rwx /etc/cron.allow
+          ignore_errors: yes
       - name: Set permissions for at.allow
         ansible.builtin.command:
           cmd: chmod og-rwx /etc/at.allow
+          ignore_errors: yes
       - name: Set ownership for cron.allow
         ansible.builtin.command:
           cmd: chown root:root /etc/cron.allow
+          ignore_errors: yes
       - name: Set ownership for at.allow
         ansible.builtin.command:
           cmd: chown root:root /etc/at.allow
+          ignore_errors: yes
     tags:
       - 5.1.8     
 
