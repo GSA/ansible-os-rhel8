@@ -1950,6 +1950,35 @@
       - /etc/at.allow
     tags:
       - 5.1.8
+    
+  - name:  5.1.8 Ensure at/cron is restricted to authorized users
+    block:
+      - name: Remove cron.deny
+        ansible.builtin.command:
+          cmd: rm /etc/cron.deny
+      - name: Remove at.deny
+        ansible.builtin.command:
+          cmd: rm /etc/at.deny
+      - name: Create cron.allow
+        ansible.builtin.command:
+          cmd: touch /etc/cron.allow
+      - name: Create at.allow
+        ansible.builtin.command:
+          cmd: touch /etc/at.allow
+      - name: Set permissions for cron.allow
+        ansible.builtin.command:
+          cmd: chmod og-rwx /etc/cron.allow
+      - name: Set permissions for at.allow
+        ansible.builtin.command:
+          cmd: chmod og-rwx /etc/at.allow
+      - name: Set ownership for cron.allow
+        ansible.builtin.command:
+          cmd: chown root:root /etc/cron.allow
+      - name: Set ownership for at.allow
+        ansible.builtin.command:
+          cmd: chown root:root /etc/at.allow
+    tags:
+      - 5.1.8     
 
   - name: 5.1.1 - Ensure cron is enabled
     service:
