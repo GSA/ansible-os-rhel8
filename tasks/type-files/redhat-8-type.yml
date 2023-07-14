@@ -2153,7 +2153,7 @@
         tags:
           - 5.2.11
       
-      - name: Add PermitEmptyPasswords no
+      - name: 5.2.11 - Ensure SSH PermitEmptyPasswords is disabled
         lineinfile:
           path: /etc/ssh/sshd_config
           line: "PermitEmptyPasswords no"
@@ -2172,6 +2172,14 @@
         notify:  restart sshd
         tags:
           - 5.2.12
+      
+      - name: 5.2.12 - Ensure SSH PermitUserEnvironment is disabled
+        ansible.builtin.lineinfile:
+          path: /etc/ssh/sshd_config
+          line: 'PermitUserEnvironment no'
+          insertafter: EOF
+        tags:
+          - 5.2.12  
 
       - name: 5.2.13 - Ensure SSH Idle Timeout is configured ClientAliveInterval
         lineinfile:
