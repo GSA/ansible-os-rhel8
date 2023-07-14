@@ -1967,37 +1967,29 @@
   - name:  5.1.8 Ensure at/cron is restricted to authorized users
     block:
       - name: Remove cron.deny
-        ansible.builtin.command:
-          cmd: rm /etc/cron.deny
-          ignore_errors: yes
+        ansible.builtin.command: "rm /etc/cron.deny"
+        ignore_errors: true
       - name: Remove at.deny
-        ansible.builtin.command:
-          cmd: rm /etc/at.deny
-          ignore_errors: yes
+        ansible.builtin.command: "rm /etc/at.deny"
+        ignore_errors: true
       - name: Create cron.allow
-        ansible.builtin.command:
-          cmd: touch /etc/cron.allow
-          ignore_errors: yes
+        ansible.builtin.command: "touch /etc/cron.allow"
+        ignore_errors: true
       - name: Create at.allow
-        ansible.builtin.command:
-          cmd: touch /etc/at.allow
-          ignore_errors: yes
+        ansible.builtin.command: "touch /etc/at.allow"
+        ignore_errors: true
       - name: Set permissions for cron.allow
-        ansible.builtin.command:
-          cmd: chmod og-rwx /etc/cron.allow
-          ignore_errors: yes
+        ansible.builtin.command: "chmod og-rwx /etc/cron.allow"
+        ignore_errors: true
       - name: Set permissions for at.allow
-        ansible.builtin.command:
-          cmd: chmod og-rwx /etc/at.allow
-          ignore_errors: yes
+        ansible.builtin.command: "chmod og-rwx /etc/at.allow"
+        ignore_errors: true
       - name: Set ownership for cron.allow
-        ansible.builtin.command:
-          cmd: chown root:root /etc/cron.allow
-          ignore_errors: yes
+        ansible.builtin.command: "chown root:root /etc/cron.allow"
+        ignore_errors: true
       - name: Set ownership for at.allow
-        ansible.builtin.command:
-          cmd: chown root:root /etc/at.allow
-          ignore_errors: yes
+        ansible.builtin.command: "chown root:root /etc/at.allow"
+        ignore_errors: true
     tags:
       - 5.1.8     
 
