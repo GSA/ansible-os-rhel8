@@ -1418,7 +1418,14 @@
       - 3.4.2
 
   # Control 3.4.3 Configure nftables, skipping
-
+  - name: 3.4.3.7 - Ensure nftables service is enabled
+    ansible.builtin.systemd:
+      name: nftables
+      state: started
+      enabled: yes
+    tags:
+      - 3.4.3.7 
+  
   - name: 3.4.4.1 - Install iptables
     block:
       - name: 3.4.4.1 - Install iptables
