@@ -1260,7 +1260,19 @@
     tags:
       - 3.1.0
 
+  - name: 3.2.2 - Ensure ICMP redirects are not accepted
+    block:
+      - name: configuring paramater in /etc/sysctl.conf
+        ansible.builtin.command: sysctl -w net.ipv4.conf.all.accept_redirects=0
+        ignore_errors: true 
     
+      - name: configuring paramater in /etc/sysctl.conf
+        ansible.builtin.command: sysctl -w net.ipv4.conf.default.accept_redirects=0
+        ignore_errors: true
+    
+      - name: configuring paramater in /etc/sysctl.conf
+        ansible.builtin.command: sysctl -w net.ipv4.route.flush=1
+        ignore_errors: true  
   
   - name: 3.2 - Set networking parameters for host as router communications
     block:
