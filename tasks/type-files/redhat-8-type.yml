@@ -242,8 +242,8 @@
           mount_count: 0
   
   - name: 1.11 - Ensure system-wide crypto policy is FUTURE or FIPS
-    ansible.builtin.command:
-      cmd: update-crypto-policies --set FUTURE
+    ansible.builtin.command: update-crypto-policies --set FUTURE
+    ignore_errors: true  
     tags:
       - 1.11 
 
