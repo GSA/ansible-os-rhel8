@@ -241,12 +241,7 @@
         set_fact:
           mount_count: 0
   
-  - name: 1.11 - Ensure system-wide crypto policy is FUTURE or FIPS
-    ansible.builtin.command: update-crypto-policies --set FUTURE
-    ignore_errors: true  
-    tags:
-      - 1.11 
-
+  
       # Examine the ansible_mounts variable which includes all of the system mounts
       #  on machine. Search for the appropriate mount information. If it exists,
       #  increment the integer variable by '1' and save the filesystems options to a
