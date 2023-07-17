@@ -1674,20 +1674,9 @@
         tags:
           - 4.1.6
       
-      - name: 4.1.6 - Ensure events that modify date and time information are collected
-        lineinfile:
-          path: /etc/audit/rules.d/time-change.rules
-          line: "{{ item }}"
-          state: present
-          insertafter: EOF
-        with_items:
-          - "-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k time-change"
-          - "-a always,exit -F arch=b32 -S adjtimex -S settimeofday -S stime -k time-change"
-          - "-a always,exit -F arch=b64 -S clock_settime -k time-change"
-          - "-a always,exit -F arch=b32 -S clock_settime -k time-change"
-          - "-w /etc/localtime -p wa -k time-change"
+      
           
-
+      
       - name: 4.1.7 - Ensure modifications to Mandatory Access Controls are collected
         template:
           dest: /etc/audit/rules.d/MAC-policy.rules
