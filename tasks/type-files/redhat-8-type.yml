@@ -1287,14 +1287,6 @@
           - net.ipv4.conf.default.secure_redirects # (3.2.3)
         notify: flush network routes
       
-      - name: 3.2.1 - Ensure source routed packets are not accepted
-        ansible.builtin.command:
-          cmd: "{{ item }}"
-        loop:
-          - sysctl -w net.ipv4.conf.all.accept_source_route=0
-          - sysctl -w net.ipv4.conf.default.accept_source_route=0
-          - sysctl -w net.ipv4.route.flush=1
-        
       
       - name: 3.2.[4-8] - Set ipv4 networking parameters (ON)
         sysctl:
