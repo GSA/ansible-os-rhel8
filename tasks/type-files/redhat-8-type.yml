@@ -1638,8 +1638,8 @@
           - "-w /var/log/faillog -p wa -k logins"
           - "-w /var/log/lastlog -p wa -k logins"
       
-      - name: Restart auditd service
-        command: systemctl restart auditd    
+      - name: display audit.rules content
+        command: cat /etc/audit/rules.d/audit.rules    
       
           
       
@@ -1664,9 +1664,7 @@
           - "-w /var/run/utmp -p wa -k session"
           - "-w /var/log/wtmp -p wa -k logins"
           - "-w /var/log/btmp -p wa -k logins"
-       
-      - name: Restart auditd service
-        command: systemctl restart auditd    
+         
         
       
       - name: 4.1.6 Ensure to collect events that modify date/time
