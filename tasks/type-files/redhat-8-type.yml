@@ -1617,16 +1617,16 @@
       # For the next several checks, each one is in their own file, so we are using
       #  the copy module to place each file independently and then motifying
       #  a restart of auditd if anything changes.
-      - name: 4.1.4 - Ensure system logins are collected
-        template:
-          dest: /etc/audit/rules.d/login.rules
-          src: audit_rules/login.rules
-          owner: root
-          group: root
-          mode: 0600
-        notify: restart auditd
-        tags:
-          4.1.4
+      #- name: 4.1.4 - Ensure system logins are collected
+      #  template:
+      #    dest: /etc/audit/rules.d/login.rules
+      #    src: audit_rules/login.rules
+      #    owner: root
+      #    group: root
+      #    mode: 0600
+      #  notify: restart auditd
+      #  tags:
+      #    4.1.4
       
       - name: 4.1.4 - Ensure login and logout events are collected
         lineinfile:
@@ -1641,16 +1641,16 @@
       - name: Run auditctl command
         ansible.builtin.command: systemctl restart auditd     
       
-      - name: 4.1.5 - Ensure session initiation information is collected
-        template:
-          dest: /etc/audit/rules.d/sessions.rules
-          src: audit_rules/sessions.rules
-          owner: root
-          group: root
-          mode: 0600
-        notify: restart auditd
-        tags:
-          4.1.5
+      #- name: 4.1.5 - Ensure session initiation information is collected
+      #  template:
+      #    dest: /etc/audit/rules.d/sessions.rules
+      #    src: audit_rules/sessions.rules
+      #    owner: root
+      #    group: root
+      #    mode: 0600
+      #  notify: restart auditd
+      #  tags:
+      #    4.1.5
       
       - name: 4.1.5 - Ensure session initiation information is collected
         lineinfile:
