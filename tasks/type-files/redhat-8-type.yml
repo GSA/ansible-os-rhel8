@@ -1635,8 +1635,12 @@
           state: present
           insertafter: EOF
         with_items:
-          - "-w /var/log/faillock -p wa -k logins"
-          - "-w /var/log/lastlog -p wa -k logins"    
+          - "-w /var/log/faillog -p wa -k logins"
+          - "-w /var/log/lastlog -p wa -k logins" 
+      
+      - name: Run auditctl command
+        ansible.builtin.command: auditctl -R /etc/audit/audit.rules
+        ignore_errors: true     
       
       - name: 4.1.5 - Ensure session initiation information is collected
         template:
@@ -1648,7 +1652,7 @@
         notify: restart auditd
         tags:
           4.1.5
-
+      
       - name: 4.1.5 - Ensure session initiation information is collected
         lineinfile:
           path: /etc/audit/rules.d/login.rules
@@ -1660,7 +1664,9 @@
           - "-w /var/log/wtmp -p wa -k logins"
           - "-w /var/log/btmp -p wa -k logins"
          
-        
+      - name: Run auditctl command
+        ansible.builtin.command: auditctl -R /etc/audit/audit.rules
+        ignore_errors: true  
       
       - name: 4.1.6 Ensure to collect events that modify date/time
         template:
