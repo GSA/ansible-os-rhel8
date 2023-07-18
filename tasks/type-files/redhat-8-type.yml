@@ -1810,8 +1810,7 @@
           4.1.17
     when: enable_audit is defined and enable_audit
 
-  - name: view contents of audit.rules
-    command: cat /etc/audit/audit.rules
+  
 
   # Section 4, Logging
   - name: 4.2.1.1 - Ensure rsyslog is installed
