@@ -1638,8 +1638,7 @@
           - "-w /var/log/faillog -p wa -k logins"
           - "-w /var/log/lastlog -p wa -k logins" 
       
-      - name: Run auditctl command
-        ansible.builtin.command: systemctl restart auditd     
+           
       
       #- name: 4.1.5 - Ensure session initiation information is collected
       #  template:
@@ -1663,8 +1662,7 @@
           - "-w /var/log/wtmp -p wa -k logins"
           - "-w /var/log/btmp -p wa -k logins"
          
-      - name: Run auditctl command
-        ansible.builtin.command: systemctl restart auditd  
+        
       
       - name: 4.1.6 Ensure to collect events that modify date/time
         template:
