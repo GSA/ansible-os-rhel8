@@ -646,24 +646,24 @@
 
 
   - name: 1.4.2 Ensure filesystem integrity is regularly checked
-      block:
-        - name: Copy aidecheck.service to /etc/systemd/system/
-          ansible.builtin.command: cp ./config/aidecheck.service /etc/systemd/system/aidecheck.service
-        
-        - name: Copy aidecheck.timer to /etc/systemd/system/
-          ansible.builtin.command: cp ./config/aidecheck.timer /etc/systemd/system/aidecheck.timer
-        
-        - name: Set permissions for aidecheck.* files
-          ansible.builtin.command: chmod 0644 /etc/systemd/system/aidecheck.*
-        
-        - name: Reenable aidecheck.timer
-          ansible.builtin.command: systemctl reenable aidecheck.timer
-        
-        - name: Restart aidecheck.timer
-          ansible.builtin.command: systemctl restart aidecheck.timer
-        
-        - name: Reload systemd daemon
-          ansible.builtin.command: systemctl daemon-reload
+    block:
+      - name: Copy aidecheck.service to /etc/systemd/system/
+        ansible.builtin.command: cp ./config/aidecheck.service /etc/systemd/system/aidecheck.service
+      
+      - name: Copy aidecheck.timer to /etc/systemd/system/
+        ansible.builtin.command: cp ./config/aidecheck.timer /etc/systemd/system/aidecheck.timer
+      
+      - name: Set permissions for aidecheck.* files
+        ansible.builtin.command: chmod 0644 /etc/systemd/system/aidecheck.*
+      
+      - name: Reenable aidecheck.timer
+        ansible.builtin.command: systemctl reenable aidecheck.timer
+      
+      - name: Restart aidecheck.timer
+        ansible.builtin.command: systemctl restart aidecheck.timer
+      
+      - name: Reload systemd daemon
+        ansible.builtin.command: systemctl daemon-reload
   
   # Determine if we are using LILO or EFI
   - name: 1.5.0 - Check if the EFI directory exists
