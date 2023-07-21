@@ -638,6 +638,27 @@
 
   # 1.5 Secure Boot settings
 
+
+  - name: 1.4.2 Ensure filesystem integrity is regularly checked
+    block:
+      - name: Copy aidecheck.service to /etc/systemd/system/
+        command: cp ./config/aidecheck.service /etc/systemd/system/aidecheck.service
+      
+      - name: Copy aidecheck.timer to /etc/systemd/system/
+        command: cp ./config/aidecheck.timer /etc/systemd/system/aidecheck.timer
+      
+      - name: Set permissions for aidecheck.* files
+        command: chmod 0644 /etc/systemd/system/aidecheck.*
+      
+      - name: Reenable aidecheck.timer
+        command: systemctl reenable aidecheck.timer
+      
+      - name: Restart aidecheck.timer
+        command: systemctl restart aidecheck.timer
+      
+      - name: Reload systemd daemon
+        command: systemctl daemon-reload
+  
   # Determine if we are using LILO or EFI
   - name: 1.5.0 - Check if the EFI directory exists
     stat:
