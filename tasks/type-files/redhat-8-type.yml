@@ -1350,7 +1350,16 @@
         when: not ipv6_disable
     tags:
       - 3.2.0
-
+  
+  - name: 3.2.1 - Ensure source routed packets are not accepted
+    ansible.builtin.command:
+      cmd: "{{ item }}"
+    loop:
+      - sysctl -w net.ipv4.conf.all.accept_source_route=0
+      - sysctl -w net.ipv4.conf.default.accept_source_route=0
+      - sysctl -w net.ipv4.route.flush=1
+    
+  
   - name: 3.3 - Disable uncommon network protocols
     block:
       # This collection of tasks creates a empty list and save it as a fact.
