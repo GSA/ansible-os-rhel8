@@ -2146,7 +2146,7 @@
               patterns: ssh_host_*_key
             register: ssh_host_out
             changed_when: false
-
+      
           - name: 5.2.3 - Set permissions on all ssh private host keys (Red Hat set the group to ssh_keys and mode to 640)
             file:
               dest: "{{ item.path }}"
@@ -2156,7 +2156,15 @@
             loop: "{{ ssh_host_out.files }}"
         tags:
           - 5.2.3
-
+      
+      - name: 5.2.3 - Ensure permissions on SSH private host key files are configured
+        ansible.builtin.command: find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec chown root:root {} \;
+        ignore_errors: true
+      
+      - name: 5.2.3 - Ensure permissions on SSH private host key files are configured
+        ansible.builtin.command: find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec chmod 0600 {} \;
+        ignore_errors: true    
+      
       
       - name: 5.2.4 - Set Permissions on ssh public host keys
         block:
