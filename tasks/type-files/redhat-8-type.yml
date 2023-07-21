@@ -263,7 +263,13 @@
     # This whole block can be turned off by excluding the following tag(s)
     tags:
       - 1.1.11
-
+  
+  - name: 1.11 - Ensure system-wide crypto policy is FUTURE or FIPS
+    ansible.builtin.command: update-crypto-policies --set FUTURE
+    ignore_errors: true  
+    tags:
+      - 1.11
+  
   # Determine if a filesystem is on a separate partition, if so, then
   #  check to see if various filesystem options exist for the filesystem
   - name: 1.1.12 - Report if /var/log/audit is not on a separate partition
