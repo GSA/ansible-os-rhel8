@@ -2249,14 +2249,14 @@
       #  tags:
       #    - 5.2.5
           
-     - name: 5.2.5 - Ensure SSH LogLevel is appropriate
-       lineinfile:
+      - name: 5.2.5 - Ensure SSH LogLevel is appropriate
+        lineinfile:
           path: /etc/ssh/sshd_config
           regexp: '^#?LogLevel'
           line: 'LogLevel INFO'
-       notify:
+        notify:
          - Restart sshd
-       tags:
+        tags:
           - 5.2.5
           
       # Using replace with a replace argument of "" removes the selected
