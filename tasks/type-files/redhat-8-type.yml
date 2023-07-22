@@ -2254,8 +2254,7 @@
           path: /etc/ssh/sshd_config
           regexp: '^#?LogLevel'
           line: 'LogLevel INFO'
-        notify:
-         - Restart sshd
+        notify:  restart sshd 
         tags:
           - 5.2.5
           
