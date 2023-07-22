@@ -2237,18 +2237,28 @@
         tags:
           - 5.2.5
       
-      - name: 5.2.5 - Set verbose loglevel in sshd_config
-        lineinfile:
+      # - name: 5.2.5 - Ensure SSH LogLevel is appropriate
+      #  lineinfile:
+      #    path: /etc/ssh/sshd_config
+      #   regexp: '^#?LogLevel'
+      #    line: 'LogLevel VERBOSE'
+      #    state: present
+      #    backrefs: yes
+      #  notify:
+      #    - restart sshd
+      #  tags:
+      #    - 5.2.5
+          
+     - name: 5.2.5 - Ensure SSH LogLevel is appropriate
+       lineinfile:
           path: /etc/ssh/sshd_config
           regexp: '^#?LogLevel'
-          line: 'LogLevel VERBOSE'
-          state: present
-          backrefs: yes
-        notify:
-          - restart sshd
-        tags:
+          line: 'LogLevel INFO'
+       notify:
+         - Restart sshd
+       tags:
           - 5.2.5
-
+          
       # Using replace with a replace argument of "" removes the selected
       #  text.
       - name: 5.2.6 - Disable X11 forwarding
