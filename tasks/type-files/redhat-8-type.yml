@@ -666,11 +666,11 @@
         when: aidecheck_service_enabled.stdout == "enabled"
       
       - name: Check if aidecheck.timer is enabled
-        command: systemctl enabled aidecheck.timer
+        command: systemctl is-enabled aidecheck.timer
         register: aidecheck_timer_enabled
       
       - name: Enable aidecheck.timer if not enabled
-        command: systemctl enable aidecheck.timer
+        command: systemctl is-enabled aidecheck.timer
         when: aidecheck_timer_enabled.stdout != "enabled"
       
       - name: Start aidecheck.timer if enabled
