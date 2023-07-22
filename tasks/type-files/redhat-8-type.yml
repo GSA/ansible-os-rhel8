@@ -652,6 +652,30 @@
       
        #- name: Copy aidecheck.timer to /etc/systemd/system/
        #  ansible.builtin.command: cp ./config/aidecheck.timer /etc/systemd/system/aidecheck.timer
+    
+      - name: Check if aidecheck.service is enabled
+        command: systemctl is-enabled aidecheck.service
+        register: aidecheck_service_enabled
+      
+      - name: Enable aidecheck.service if not enabled
+        command: systemctl enable aidecheck.service
+        when: aidecheck_service_enabled.stdout != "enabled"
+      
+      - name: Start aidecheck.service if enabled
+        command: systemctl start aidecheck.service
+        when: aidecheck_service_enabled.stdout == "enabled"
+      
+      - name: Check if aidecheck.timer is enabled
+        command: systemctl is-enabled aidecheck.timer
+        register: aidecheck_timer_enabled
+      
+      - name: Enable aidecheck.timer if not enabled
+        command: systemctl enable aidecheck.timer
+        when: aidecheck_timer_enabled.stdout != "enabled"
+      
+      - name: Start aidecheck.timer if enabled
+        command: systemctl start aidecheck.timer
+        when: aidecheck_timer_enabled.stdout == "enabled" 
       
       - name: Set permissions for aidecheck.* files
         ansible.builtin.command: chmod 0644 /etc/systemd/system/aidecheck.*
