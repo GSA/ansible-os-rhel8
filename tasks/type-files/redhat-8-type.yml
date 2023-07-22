@@ -1416,11 +1416,15 @@
           state: present
         notify: start firewalld # 3.4.2.1
 
-      - name: 3.4.2.1 - Enable firewalld service
-        systemd:
-          name: firewalld
-          state: started
-          enabled: yes
+      #- name: 3.4.2.1 - Enable firewalld service
+      #  systemd:
+      #    name: firewalld
+      #    state: started
+      #    enabled: yes
+      
+      - name: 3.4.2.1 - Ensure firewalld service is enabled and running
+        command: systemctl --now enable firewalld
+          
           
       - name: 3.4.2.2 - Disable iptables service
         service:
