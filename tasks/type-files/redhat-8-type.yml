@@ -1695,16 +1695,16 @@
       # For the next several checks, each one is in their own file, so we are using
       #  the copy module to place each file independently and then motifying
       #  a restart of auditd if anything changes.
-      - name: 4.1.4 - Ensure system logins are collected
-        template:
-          dest: /etc/audit/rules.d/login.rules
-          src: audit_rules/login.rules
-          owner: root
-          group: root
-          mode: 0600
-        notify: restart auditd
-        tags:
-          4.1.4
+      #- name: 4.1.4 - Ensure system logins are collected
+      #  template:
+      #    dest: /etc/audit/rules.d/login.rules
+      #    src: audit_rules/login.rules
+      #    owner: root
+      #    group: root
+      #   mode: 0600
+      # notify: restart auditd
+      #  tags:
+      #    4.1.4
       
       #- name: Create empty login.rules file
       #  ansible.builtin.command: touch /etc/audit/rules.d/syslogin.rules
