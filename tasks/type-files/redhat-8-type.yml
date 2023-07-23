@@ -1809,16 +1809,16 @@
       
           
       
-      - name: 4.1.10 - Ensure unsuccessful unauthorized file access attempts are collected
-        template:
-          dest: /etc/audit/rules.d/bad-file-access.rules
-          src: audit_rules/bad-file-access.rules
-          owner: root
-          group: root
-          mode: 0600
-        notify: restart auditd
-        tags:
-          4.1.10
+      #- name: 4.1.10 - Ensure unsuccessful unauthorized file access attempts are collected
+      #  template:
+      #    dest: /etc/audit/rules.d/bad-file-access.rules
+      #    src: audit_rules/bad-file-access.rules
+      #    owner: root
+      #    group: root
+      #    mode: 0600
+      #  notify: restart auditd
+      #  tags:
+      #    4.1.10
       
       - name: 4.1.10 - Ensure unsuccessful unauthorized file access attempts are collected
         file:
