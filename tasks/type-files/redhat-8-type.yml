@@ -2602,18 +2602,36 @@
     tags:
       - 5.5.3
   
-  - name: 5.5.3 - Ensure default user shell timeout is 900 seconds or less
+   # - name: 5.5.3 - Ensure default user shell timeout is 900 seconds or less
+   #  lineinfile:
+   #  path: "{{ item }}"
+   #  line: "readonly TMOUT=900 ; export TMOUT"
+   #  insertafter: EOF
+   #  with_items:
+   #  - /etc/bashrc
+   #  - /etc/profile
+   #  - /etc/profile.d/*.*sh
+   # ignore_errors: true   
+      
+  - name: Ensure shell timeout is 900 seconds or less
     lineinfile:
       path: "{{ item }}"
-      line: "readonly TMOUT=900 ; export TMOUT"
-      insertafter: EOF
-    with_items:
-      - /etc/bashrc
+      regexp: '^TMOUT='
+      line: 'TMOUT=900'
+    loop:
       - /etc/profile
-      - /etc/profile.d/*.*sh
-    ignore_errors: true   
-      
+      - /etc/bashrc
+    ignore_errors: yes
 
+  - name: Ensure shell timeout in /etc/profile.d/ scripts
+    lineinfile:
+      path: "/etc/profile.d/{{ item }}"
+      regexp: '^TMOUT='
+      line: 'TMOUT=900'
+    with_fileglob:
+      - /etc/profile.d/*.sh
+    ignore_errors: yes
+    
   # Control is actually setting to GID of 0 and the user module takes a group name, not a GID, so have to use usermod
   - name: 5.5.4 - Ensure default group for root is GID 0
     command: /usr/sbin/usermod -g 0 root
