@@ -1861,12 +1861,12 @@
        # tags:
        #  4.1.12
       
-      - name: 4.1.12 - Ensure successful file system mounts are collected
-        blockinfile:
-         path: /etc/audit/rules.d/mounts.rules
-        block: |
-         -a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts
-         -a always,exit -F arch=b32 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts    
+       - name: 4.1.12 - Ensure successful file system mounts are collected
+         blockinfile:
+          path: /etc/audit/rules.d/mounts.rules
+         block: |
+          -a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts
+          -a always,exit -F arch=b32 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts    
          
       # Control 4.1.13 - Ensure use of privileged commands is collected, is machine dependent
       # skipping
