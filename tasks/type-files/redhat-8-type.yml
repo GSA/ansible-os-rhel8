@@ -2668,15 +2668,30 @@
     tags:
       - 5.5.5
   
+  #- name: 5.5.5 - Ensure default user umask is 027 or more restrictive
+  #  lineinfile:
+  #    path: "{{ item.path }}"
+  #    line: "umask 027"
+  #  loop: "{{ found_files.files }}"
+  #  vars:
+  #    line_to_add: "umask 027"
+  #  tags:
+  #    - 5.5.5
+      
   - name: 5.5.5 - Ensure default user umask is 027 or more restrictive
     lineinfile:
-      path: "{{ item.path }}"
-      line: "umask 027"
-    loop: "{{ found_files.files }}"
-    vars:
-      line_to_add: "umask 027"
-    tags:
-      - 5.5.5  
+      path: /etc/profile
+      regexp: '^umask 022$'  # Regular expression to match the existing line
+      line: 'umask 027'      # The line to replace with
+      backrefs: yes         # Enable backreferences to support line replacements
+   
+  - name: 5.5.5 - Ensure default user umask is 027 or more restrictive
+    lineinfile:
+      path: /etc/bashrc
+      regexp: '^umask 022$'  # Regular expression to match the existing line
+      line: 'umask 027'      # The line to replace with
+      backrefs: yes         # Enable backreferences to support line replacements    
+      
   
   # 5.5.6,  Ensure root login is restricted to system console
   # not easily automatable because of the various TTYs on a machine
