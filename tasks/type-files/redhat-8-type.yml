@@ -1748,20 +1748,24 @@
          
         
       
-      - name: 4.1.6 Ensure to collect events that modify date/time
-        template:
-          dest: /etc/audit/rules.d/datetime.rules
-          src: audit_rules/datetime.rules
-          owner: root
-          group: root
-          mode: 0600
-        notify: restart auditd
-        tags:
-          - 4.1.6
-      
+        
+      # - name: 4.1.6 Ensure to collect events that modify date/time
+      #  template:
+      #    dest: /etc/audit/rules.d/datetime.rules
+      #    src: audit_rules/datetime.rules
+      #    owner: root
+      #    group: root
+      #   mode: 0600
+      #  notify: restart auditd
+      #  tags:
+      #    - 4.1.6
+          
+      - name: 4.1.6 - Ensure events that modify date and time information are collected
+        ansible.builtin.command: touch /etc/audit/rules.d/time-change.rules
+        
       - name: 4.1.6 - Ensure events that modify date and time information are collected
         lineinfile:
-          path: /etc/audit/rules.d/datetime.rules
+          path: /etc/audit/rules.d/time-change.rules
           line: "{{ item }}"
           state: present
           insertafter: EOF
