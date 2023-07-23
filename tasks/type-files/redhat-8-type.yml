@@ -1864,7 +1864,10 @@
        # notify: restart auditd
        # tags:
        #  4.1.12
-      
+       
+      - name: 4.1.12 - Ensure successful file system mounts are collected
+        ansible.builtin.command: touch /etc/audit/rules.d/mounts.rules
+        
       - name: 4.1.12 - Ensure successful file system mounts are collected
         blockinfile:
           path: /etc/audit/rules.d/mounts.rules
