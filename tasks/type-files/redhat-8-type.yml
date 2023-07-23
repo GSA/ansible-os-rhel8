@@ -645,8 +645,8 @@
   # 1.5 Secure Boot settings
 
 
-  #- name: 1.4.2 Ensure filesystem integrity is regularly checked
-  #  block:
+  - name: 1.4.2 Ensure filesystem integrity is regularly checked
+    block:
        #- name: Copy aidecheck.service to /etc/systemd/system/
        #  ansible.builtin.command: cp ./config/aidecheck.service /etc/systemd/system/aidecheck.service
       
