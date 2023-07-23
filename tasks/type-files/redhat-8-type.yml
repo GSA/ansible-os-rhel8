@@ -1707,11 +1707,11 @@
       #    4.1.4
       
       - name: Create empty login.rules file
-        ansible.builtin.command: touch /etc/audit/rules.d/login.rules
+        ansible.builtin.command: touch /etc/audit/rules.d/audit.rules
         
       - name: 4.1.4 - Ensure login and logout events are collected
         lineinfile:
-          path: /etc/audit/rules.d/login.rules
+          path: /etc/audit/rules.d/audit.rules
           line: "{{ item }}"
           state: present
           insertafter: EOF
