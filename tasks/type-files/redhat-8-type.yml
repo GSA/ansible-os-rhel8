@@ -2629,7 +2629,7 @@
       regexp: '^TMOUT='
       line: 'TMOUT=900'
     with_fileglob:
-      - /etc/profile.d/*.sh
+      - /etc/profile.d/*.*sh
     ignore_errors: yes
     
   # Control is actually setting to GID of 0 and the user module takes a group name, not a GID, so have to use usermod
