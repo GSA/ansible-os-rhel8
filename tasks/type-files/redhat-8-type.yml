@@ -1807,11 +1807,7 @@
         tags:
           4.1.9
       
-      - name: 4.1.10 - Ensure unsuccessful unauthorized file access attempts are collected
-        file:
-          path: /etc/audit/rules.d/access.rules
-          state: touch
-          mode: '0644'    
+          
       
       - name: 4.1.10 - Ensure unsuccessful unauthorized file access attempts are collected
         template:
@@ -1824,16 +1820,23 @@
         tags:
           4.1.10
       
-      #- name: 4.1.10 - Ensure unsuccessful unauthorized file access attempts are collected
-      #  blockinfile:
-      #    path: /etc/audit/rules.d/access.rules
-      #    block: |
-      #      -a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access
-      #      -a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access
-      #      -a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access
-      #      -a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access   
-      #  tags:
-      #   4.1.10   
+      - name: 4.1.10 - Ensure unsuccessful unauthorized file access attempts are collected
+        file:
+          path: /etc/audit/rules.d/access.rules
+          state: touch
+          mode: '0644'     
+      
+      - name: 4.1.10 - Ensure unsuccessful unauthorized file access attempts are collected
+        blockinfile:
+          path: /etc/audit/rules.d/access.rules
+          block: |
+            -a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access
+            -a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access
+            -a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access
+            -a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access   
+        tags:
+          4.1.10
+        ignore_error: true 
 
       - name: 4.1.11 - Ensure events that modify user/group information are collected
         template:
