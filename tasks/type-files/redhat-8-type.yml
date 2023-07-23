@@ -1836,7 +1836,7 @@
             -a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access   
         tags:
           4.1.10
-        ignore_error: true 
+        ignore_errors: true 
 
       - name: 4.1.11 - Ensure events that modify user/group information are collected
         template:
