@@ -2169,13 +2169,7 @@
         tags:
           - 5.2.3
       
-      - name: 5.2.3 - Ensure permissions on SSH private host key files are configured
-        ansible.builtin.command: find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec chown root:root {} \;
-        ignore_errors: true
       
-      - name: 5.2.3 - Ensure permissions on SSH private host key files are configured
-        ansible.builtin.command: find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec chmod 0600 {} \;
-        ignore_errors: true    
       
       
       - name: 5.2.4 - Set Permissions on ssh public host keys
