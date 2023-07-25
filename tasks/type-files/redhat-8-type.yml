@@ -2440,7 +2440,7 @@
         tags:
           - 5.2.18
       
-      - name: Add MaxSessions rule to sshd_config
+      - name: 5.2.19 - Ensure SSH MaxSessions is set to 4 or less
         lineinfile:
           path: /etc/ssh/sshd_config
           line: 'MaxSessions 4'
