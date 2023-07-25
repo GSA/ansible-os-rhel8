@@ -264,11 +264,7 @@
     tags:
       - 1.1.11
   
-  - name: 1.11 - Ensure system-wide crypto policy is FUTURE or FIPS
-    ansible.builtin.command: update-crypto-policies --set FUTURE
-    ignore_errors: true  
-    tags:
-      - 1.11
+  
   
   # Determine if a filesystem is on a separate partition, if so, then
   #  check to see if various filesystem options exist for the filesystem
