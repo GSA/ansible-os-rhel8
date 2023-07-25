@@ -2660,16 +2660,7 @@
     tags:
       - 5.5.5
   
-  #- name: Add umask 027 to /etc/profile.d/*.sh files
-  #  lineinfile:
-  #    path: "{{ item }}"
-  #    line: "umask 027"
-  #    insertafter: EOF
-  #  with_fileglob:
-  #    - "/etc/profile.d/*.sh"
-  #  tags:
-  #    - 5.5.5
-  
+
   - name: 5.5.5 - Ensure default user umask is 027 or more restrictive
     find:
       paths: /etc/profile.d/
@@ -2678,16 +2669,7 @@
     tags:
       - 5.5.5
   
-  #- name: 5.5.5 - Ensure default user umask is 027 or more restrictive
-  #  lineinfile:
-  #    path: "{{ item.path }}"
-  #    line: "umask 027"
-  #  loop: "{{ found_files.files }}"
-  #  vars:
-  #    line_to_add: "umask 027"
-  #  tags:
-  #    - 5.5.5
-      
+     
   - name: 5.5.5 - Ensure default user umask is 027 or more restrictive
     lineinfile:
       path: /etc/profile
