@@ -644,49 +644,7 @@
 
   # 1.5 Secure Boot settings
 
-
-  - name: 1.4.2 Ensure filesystem integrity is regularly checked
-    block:
-       #- name: Copy aidecheck.service to /etc/systemd/system/
-       #  ansible.builtin.command: cp ./config/aidecheck.service /etc/systemd/system/aidecheck.service
-      
-       #- name: Copy aidecheck.timer to /etc/systemd/system/
-       #  ansible.builtin.command: cp ./config/aidecheck.timer /etc/systemd/system/aidecheck.timer
-     
-       - name: Check if aidecheck.service is enabled
-         command: systemctl is-enabled aidecheck.service
-         register: aidecheck_service_enabled
-       
-       - name: Enable aidecheck.service if not enabled
-         command: systemctl enable aidecheck.service
-         when: aidecheck_service_enabled.stdout != "enabled"
-        
-       - name: Start aidecheck.service if enabled
-         command: systemctl start aidecheck.service
-         when: aidecheck_service_enabled.stdout == "enabled"
-       
-       - name: Enable aidecheck.timer if not enabled
-         command: systemctl enable aidecheck.timer
-         ignore_errors: true
-         
-       - name: Start aidecheck.timer if enabled
-         command: systemctl start aidecheck.timer
-         ignore_errors: true
-          
-       - name: Set permissions for aidecheck.* files
-         ansible.builtin.command: chmod 0644 /etc/systemd/system/aidecheck.*
-         ignore_errors: true
-        
-       - name: Reenable aidecheck.timer
-         ansible.builtin.command: systemctl is-reenable aidecheck.timer
-         ignore_errors: true
-        
-       - name: Restart aidecheck.timer
-         ansible.builtin.command: systemctl restart aidecheck.timer
-        
-       - name: Reload systemd daemon
-         ansible.builtin.command: systemctl daemon-reload
-  
+ 
   # Determine if we are using LILO or EFI
   - name: 1.5.0 - Check if the EFI directory exists
     stat:
