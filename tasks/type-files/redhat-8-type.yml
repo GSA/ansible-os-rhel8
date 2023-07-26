@@ -1640,8 +1640,8 @@
           owner: root
           group: root
           mode: 0600
-       notify: restart auditd
-       tags:
+        notify: restart auditd
+        tags:
           4.1.4
           
       - name: 4.1.4 - Ensure system logins are collected
