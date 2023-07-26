@@ -1633,86 +1633,73 @@
       # For the next several checks, each one is in their own file, so we are using
       #  the copy module to place each file independently and then motifying
       #  a restart of auditd if anything changes.
-      #- name: 4.1.4 - Ensure system logins are collected
-      #  template:
-      #    dest: /etc/audit/rules.d/login.rules
-      #    src: audit_rules/login.rules
-      #    owner: root
-      #    group: root
-      #   mode: 0600
-      # notify: restart auditd
-      #  tags:
-      #    4.1.4
-      
-      - name: Create empty login.rules file
-        ansible.builtin.command: touch /etc/audit/rules.d/audit.rules
-        
-      - name: 4.1.4 - Ensure login and logout events are collected
-        lineinfile:
-          path: /etc/audit/rules.d/audit.rules
-          line: "{{ item }}"
-          state: present
-          insertafter: EOF
-        with_items:
-          - "-w /var/log/faillog -p wa -k logins"
-          - "-w /var/log/lastlog -p wa -k logins" 
-      
-           
-      
-      # - name: 4.1.5 - Ensure session initiation information is collected
-      #  template:
-      #    dest: /etc/audit/rules.d/sessions.rules
-      #    src: audit_rules/sessions.rules
-      #    owner: root
-      #    group: root
-      #    mode: 0600
-      #  notify: restart auditd
-      #  tags:
-      #   4.1.5
+      - name: 4.1.4 - Ensure system logins are collected
+        template:
+          dest: /etc/audit/rules.d/login.rules
+          src: audit_rules/login.rules
+          owner: root
+          group: root
+          mode: 0600
+       notify: restart auditd
+       tags:
+          4.1.4
           
-      - name: 4.1.5 - Ensure session initiation information is collected
-        ansible.builtin.command: touch /etc/audit/rules.d/logins.rules
+      - name: 4.1.4 - Ensure system logins are collected
+        template:
+          dest: /etc/audit/rules.d/audit.rules
+          src: audit_rules/audit.rules
+          owner: root
+          group: root
+          mode: 0600
+       notify: restart auditd
+       tags:
+          4.1.4
       
       - name: 4.1.5 - Ensure session initiation information is collected
-        lineinfile:
-          path: /etc/audit/rules.d/logins.rules
-          line: "{{ item }}"
-          state: present
-          insertafter: EOF
-        with_items:
-          - "-w /var/run/utmp -p wa -k session"
-          - "-w /var/log/wtmp -p wa -k logins"
-          - "-w /var/log/btmp -p wa -k logins"
+        template:
+         dest: /etc/audit/rules.d/sessions.rules
+         src: audit_rules/sessions.rules
+         owner: root
+         group: root
+         mode: 0600
+        notify: restart auditd
+        tags:
+         4.1.5
+
+      - name: 4.1.5 - Ensure session initiation information is collected
+        template:
+          dest: /etc/audit/rules.d/logins.rules
+          src: audit_rules/logins.rules
+          owner: root
+          group: root
+          mode: 0600
+        notify: restart auditd
+        tags:
+         4.1.5
          
         
-      
-        
-      # - name: 4.1.6 Ensure to collect events that modify date/time
-      #  template:
-      #    dest: /etc/audit/rules.d/datetime.rules
-      #    src: audit_rules/datetime.rules
-      #    owner: root
-      #    group: root
-      #   mode: 0600
-      #  notify: restart auditd
-      #  tags:
-      #    - 4.1.6
+       - name: 4.1.6 Ensure to collect events that modify date/time
+         template:
+          dest: /etc/audit/rules.d/datetime.rules
+          src: audit_rules/datetime.rules
+          owner: root
+          group: root
+          mode: 0600
+        notify: restart auditd
+        tags:
+          - 4.1.6
+
+      - name: 4.1.6 Ensure to collect events that modify date/time
+        template:
+         dest: /etc/audit/rules.d/time-change.rules
+         src: audit_rules/time-change.rules
+         owner: root
+         group: root
+         mode: 0600
+        notify: restart auditd
+        tags:
+          - 4.1.6
           
-      - name: 4.1.6 - Ensure events that modify date and time information are collected
-        ansible.builtin.command: touch /etc/audit/rules.d/time-change.rules
-        
-      - name: 4.1.6 - Ensure events that modify date and time information are collected
-        lineinfile:
-          path: /etc/audit/rules.d/time-change.rules
-          line: "{{ item }}"
-          state: present
-          insertafter: EOF
-        with_items:
-          - "-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k time-change"
-          - "-a always,exit -F arch=b32 -S adjtimex -S settimeofday -S stime -k time-change"
-          - "-a always,exit -F arch=b64 -S clock_settime -k time-change"
-          - "-a always,exit -F arch=b32 -S clock_settime -k time-change"
-          - "-w /etc/localtime -p wa -k time-change"
           
       
       - name: 4.1.7 - Ensure modifications to Mandatory Access Controls are collected
@@ -1751,34 +1738,29 @@
       
           
       
-      #- name: 4.1.10 - Ensure unsuccessful unauthorized file access attempts are collected
-      #  template:
-      #    dest: /etc/audit/rules.d/bad-file-access.rules
-      #    src: audit_rules/bad-file-access.rules
-      #    owner: root
-      #    group: root
-      #    mode: 0600
-      #  notify: restart auditd
-      #  tags:
-      #    4.1.10
-      
       - name: 4.1.10 - Ensure unsuccessful unauthorized file access attempts are collected
-        file:
-          path: /etc/audit/rules.d/access.rules
-          state: touch
-          mode: '0644'     
-      
-      - name: 4.1.10 - Ensure unsuccessful unauthorized file access attempts are collected
-        blockinfile:
-          path: /etc/audit/rules.d/access.rules
-          block: |
-            -a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access
-            -a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access
-            -a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access
-            -a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access   
-        ignore_errors: true
+        template:
+          dest: /etc/audit/rules.d/bad-file-access.rules
+          src: audit_rules/bad-file-access.rules
+          owner: root
+          group: root
+          mode: 0600
+        notify: restart auditd
         tags:
           4.1.10
+
+      - name: 4.1.10 - Ensure unsuccessful unauthorized file access attempts are collected
+        template:
+          dest: /etc/audit/rules.d/access.rules
+          src: audit_rules/access.rules
+          owner: root
+          group: root
+          mode: 0600
+        notify: restart auditd
+        tags:
+          4.1.10
+      
+      
          
 
       - name: 4.1.11 - Ensure events that modify user/group information are collected
@@ -1792,27 +1774,28 @@
         tags:
           4.1.11
 
-       #- name: 4.1.12 - Ensure successful file system mounts are collected
-       # template:
-       #  dest: /etc/audit/rules.d/file-system-mounts.rules
-       #  src: audit_rules/file-system-mounts.rules
-       #  owner: root
-       #   group: root
-       #  mode: 0600
-       # notify: restart auditd
-       # tags:
-       #  4.1.12
-       
       - name: 4.1.12 - Ensure successful file system mounts are collected
-        ansible.builtin.command: touch /etc/audit/rules.d/mounts.rules
-        
+        template:
+         dest: /etc/audit/rules.d/file-system-mounts.rules
+         src: audit_rules/file-system-mounts.rules
+         owner: root
+         group: root
+         mode: 0600
+        notify: restart auditd
+        tags:
+         4.1.12
+
       - name: 4.1.12 - Ensure successful file system mounts are collected
-        blockinfile:
-          path: /etc/audit/rules.d/mounts.rules
-          block: |
-            -a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts
-            -a always,exit -F arch=b32 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts    
-        ignore_errors: true
+        template:
+         dest: /etc/audit/rules.d/mounts.rules
+         src: audit_rules/mounts.rules
+         owner: root
+         group: root
+         mode: 0600
+        notify: restart auditd
+        tags:
+         4.1.12
+
          
       # Control 4.1.13 - Ensure use of privileged commands is collected, is machine dependent
       # skipping
