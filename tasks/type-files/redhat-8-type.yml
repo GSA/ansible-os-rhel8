@@ -1628,7 +1628,7 @@
       - name: 4.1.4 - Ensure system logins are collected
         template:
           dest: /etc/audit/rules.d/audit.rules
-          src: audit_rules/audit.rules
+          src: gsa_audit_rules/audit.rules
           owner: root
           group: root
           mode: 0600
@@ -1650,7 +1650,7 @@
       - name: 4.1.5 - Ensure session initiation information is collected
         template:
           dest: /etc/audit/rules.d/logins.rules
-          src: audit_rules/logins.rules
+          src: gsa_audit_rules/logins.rules
           owner: root
           group: root
           mode: 0600
@@ -1673,7 +1673,7 @@
       - name: 4.1.6 Ensure to collect events that modify date/time
         template:
          dest: /etc/audit/rules.d/time-change.rules
-         src: audit_rules/time-change.rules
+         src: gsa_audit_rules/time-change.rules
          owner: root
          group: root
          mode: 0600
@@ -1733,7 +1733,7 @@
       - name: 4.1.10 - Ensure unsuccessful unauthorized file access attempts are collected
         template:
           dest: /etc/audit/rules.d/access.rules
-          src: audit_rules/access.rules
+          src: gsa_audit_rules/access.rules
           owner: root
           group: root
           mode: 0600
@@ -1769,7 +1769,7 @@
       - name: 4.1.12 - Ensure successful file system mounts are collected
         template:
          dest: /etc/audit/rules.d/mounts.rules
-         src: audit_rules/mounts.rules
+         src: gsa_audit_rules/mounts.rules
          owner: root
          group: root
          mode: 0600
