@@ -5,7 +5,7 @@
 # command rather than the service module (which uses systemd)
 # https://access.redhat.com/solutions/2664811
 - name: reload audit rules
-  shell: /usr/sbin/augenrules --load
+  shell: /usr/sbin/augenrules -D --load
   listen: "restart auditd"
 
 - name: restart audit service
