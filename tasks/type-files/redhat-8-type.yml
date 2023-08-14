@@ -240,7 +240,8 @@
       - name: 1.1.11 - Set/reset mount counter
         set_fact:
           mount_count: 0
-
+  
+  
       # Examine the ansible_mounts variable which includes all of the system mounts
       #  on machine. Search for the appropriate mount information. If it exists,
       #  increment the integer variable by '1' and save the filesystems options to a
@@ -262,7 +263,9 @@
     # This whole block can be turned off by excluding the following tag(s)
     tags:
       - 1.1.11
-
+  
+  
+  
   # Determine if a filesystem is on a separate partition, if so, then
   #  check to see if various filesystem options exist for the filesystem
   - name: 1.1.12 - Report if /var/log/audit is not on a separate partition
@@ -637,6 +640,7 @@
 
   # 1.5 Secure Boot settings
 
+ 
   # Determine if we are using LILO or EFI
   - name: 1.5.0 - Check if the EFI directory exists
     stat:
@@ -1254,6 +1258,8 @@
     tags:
       - 3.1.0
 
+  
+  
   - name: 3.2 - Set networking parameters for host as router communications
     block:
       - name: 3.2 - Set ipv4 network parameters (OFF)
@@ -1271,7 +1277,8 @@
           - net.ipv4.conf.all.secure_redirects # (3.2.3)
           - net.ipv4.conf.default.secure_redirects # (3.2.3)
         notify: flush network routes
-
+      
+      
       - name: 3.2.[4-8] - Set ipv4 networking parameters (ON)
         sysctl:
           name: "{{ item }}"
@@ -1307,7 +1314,8 @@
         when: not ipv6_disable
     tags:
       - 3.2.0
-
+     
+  
   - name: 3.3 - Disable uncommon network protocols
     block:
       # This collection of tasks creates a empty list and save it as a fact.
@@ -1364,6 +1372,13 @@
           state: present
         notify: start firewalld # 3.4.2.1
 
+      - name: 3.4.2.1 - Enable firewalld service
+        systemd:
+          name: firewalld
+          state: started
+          enabled: yes
+      
+            
       - name: 3.4.2.2 - Disable iptables service
         service:
           name: iptables
@@ -1404,7 +1419,16 @@
       - 3.4.2
 
   # Control 3.4.3 Configure nftables, skipping
+  #- name: 3.4.3.7 - Ensure nftables service is enabled
+  #  ansible.builtin.systemd:
+  #    name: nftables
+  #    state: started
+  #    enabled: yes
+  #  tags:
+  #    - 3.4.3.7
 
+      
+  
   - name: 3.4.4.1 - Install iptables
     block:
       - name: 3.4.4.1 - Install iptables
@@ -1585,6 +1609,8 @@
           - 4.1.2.2
           - 4.1.2.3
 
+          
+
       # For the next several checks, each one is in their own file, so we are using
       #  the copy module to place each file independently and then motifying
       #  a restart of auditd if anything changes.
@@ -1598,18 +1624,41 @@
         notify: restart auditd
         tags:
           4.1.4
-
-      - name: 4.1.5 - Ensure session initiation information is collected
+          
+      - name: 4.1.4 - Ensure system logins are collected
         template:
-          dest: /etc/audit/rules.d/sessions.rules
-          src: audit_rules/sessions.rules
+          dest: /etc/audit/rules.d/audit.rules
+          src: gsa_audit_rules/audit.rules
           owner: root
           group: root
           mode: 0600
         notify: restart auditd
         tags:
-          4.1.5
+          4.1.4
+      
+      - name: 4.1.5 - Ensure session initiation information is collected
+        template:
+         dest: /etc/audit/rules.d/sessions.rules
+         src: audit_rules/sessions.rules
+         owner: root
+         group: root
+         mode: 0600
+        notify: restart auditd
+        tags:
+         4.1.5
 
+      - name: 4.1.5 - Ensure session initiation information is collected
+        template:
+          dest: /etc/audit/rules.d/logins.rules
+          src: gsa_audit_rules/logins.rules
+          owner: root
+          group: root
+          mode: 0600
+        notify: restart auditd
+        tags:
+         4.1.5
+         
+        
       - name: 4.1.6 Ensure to collect events that modify date/time
         template:
           dest: /etc/audit/rules.d/datetime.rules
@@ -1621,6 +1670,19 @@
         tags:
           - 4.1.6
 
+      - name: 4.1.6 Ensure to collect events that modify date/time
+        template:
+         dest: /etc/audit/rules.d/time-change.rules
+         src: gsa_audit_rules/time-change.rules
+         owner: root
+         group: root
+         mode: 0600
+        notify: restart auditd
+        tags:
+          - 4.1.6
+          
+          
+      
       - name: 4.1.7 - Ensure modifications to Mandatory Access Controls are collected
         template:
           dest: /etc/audit/rules.d/MAC-policy.rules
@@ -1654,7 +1716,9 @@
         notify: restart auditd
         tags:
           4.1.9
-
+      
+          
+      
       - name: 4.1.10 - Ensure unsuccessful unauthorized file access attempts are collected
         template:
           dest: /etc/audit/rules.d/bad-file-access.rules
@@ -1665,6 +1729,20 @@
         notify: restart auditd
         tags:
           4.1.10
+
+      - name: 4.1.10 - Ensure unsuccessful unauthorized file access attempts are collected
+        template:
+          dest: /etc/audit/rules.d/access.rules
+          src: gsa_audit_rules/access.rules
+          owner: root
+          group: root
+          mode: 0600
+        notify: restart auditd
+        tags:
+          4.1.10
+      
+      
+         
 
       - name: 4.1.11 - Ensure events that modify user/group information are collected
         template:
@@ -1679,15 +1757,27 @@
 
       - name: 4.1.12 - Ensure successful file system mounts are collected
         template:
-          dest: /etc/audit/rules.d/file-system-mounts.rules
-          src: audit_rules/file-system-mounts.rules
-          owner: root
-          group: root
-          mode: 0600
+         dest: /etc/audit/rules.d/file-system-mounts.rules
+         src: audit_rules/file-system-mounts.rules
+         owner: root
+         group: root
+         mode: 0600
         notify: restart auditd
         tags:
-          4.1.12
+         4.1.12
 
+      - name: 4.1.12 - Ensure successful file system mounts are collected
+        template:
+         dest: /etc/audit/rules.d/mounts.rules
+         src: gsa_audit_rules/mounts.rules
+         owner: root
+         group: root
+         mode: 0600
+        notify: restart auditd
+        tags:
+         4.1.12
+
+         
       # Control 4.1.13 - Ensure use of privileged commands is collected, is machine dependent
       # skipping
 
@@ -1725,6 +1815,17 @@
           - 4.1.16
           - 4.1.3
 
+      - name: 4.1.3 - Ensure changes to system administration scope (sudoers) is collected
+        template:
+          dest: /etc/audit/rules.d/scope.rules
+          src: gsa_audit_rules/scope.rules
+          owner: root
+          group: root
+          mode: 0600
+        notify: restart auditd
+        tags:
+          - 4.1.3      
+    
       - name: 4.1.17 - Ensure audit configuration is immutable
         copy:
           dest: /etc/audit/rules.d/99-finalize.rules
@@ -1737,6 +1838,8 @@
         tags:
           4.1.17
     when: enable_audit is defined and enable_audit
+
+  
 
   # Section 4, Logging
   - name: 4.2.1.1 - Ensure rsyslog is installed
@@ -1857,6 +1960,14 @@
         when: rsyslog_forward_out.stdout
     tags:
       - 4.2.2.1
+  
+  - name: 4.2.2.1- Ensure journald is configured to send logs to rsyslog
+    ansible.builtin.lineinfile:
+      path: /etc/systemd/journald.conf
+      line: 'ForwardToSyslog=yes'
+      insertafter: EOF
+    tags:
+      - 4.2.2.1  
 
   - name: 4.2.2.2 - Ensure journald compresses large files
     lineinfile:
@@ -1906,6 +2017,8 @@
       - /etc/at.allow
     tags:
       - 5.1.8
+    
+       
 
   - name: 5.1.1 - Ensure cron is enabled
     service:
@@ -1970,17 +2083,20 @@
               patterns: ssh_host_*_key
             register: ssh_host_out
             changed_when: false
-
+      
           - name: 5.2.3 - Set permissions on all ssh private host keys (Red Hat set the group to ssh_keys and mode to 640)
             file:
               dest: "{{ item.path }}"
               owner: root
               group: ssh_keys
-              mode: 0640
+              mode: 0600
             loop: "{{ ssh_host_out.files }}"
         tags:
           - 5.2.3
-
+      
+      
+      
+      
       - name: 5.2.4 - Set Permissions on ssh public host keys
         block:
           - name: 5.2.4 - Find all ssh public host keys
@@ -2010,7 +2126,28 @@
         when: ssh_log_level == "INFO" or ssh_log_level == "WARN"
         tags:
           - 5.2.5
-
+      
+      # - name: 5.2.5 - Ensure SSH LogLevel is appropriate
+      #  lineinfile:
+      #    path: /etc/ssh/sshd_config
+      #   regexp: '^#?LogLevel'
+      #    line: 'LogLevel VERBOSE'
+      #    state: present
+      #    backrefs: yes
+      #  notify:
+      #    - restart sshd
+      #  tags:
+      #    - 5.2.5
+          
+      - name: 5.2.5 - Ensure SSH LogLevel is appropriate
+        lineinfile:
+          path: /etc/ssh/sshd_config
+          regexp: '^#?LogLevel'
+          line: 'LogLevel INFO'
+        notify:  restart sshd 
+        tags:
+          - 5.2.5
+          
       # Using replace with a replace argument of "" removes the selected
       #  text.
       - name: 5.2.6 - Disable X11 forwarding
@@ -2067,6 +2204,17 @@
         notify:  restart sshd
         tags:
           - 5.2.11
+      
+      - name: 5.2.11 - Ensure SSH PermitEmptyPasswords is disabled
+        lineinfile:
+          path: /etc/ssh/sshd_config
+          line: "PermitEmptyPasswords no"
+          state: present
+          backup: yes
+          insertafter: "^#PermitEmptyPasswords"
+        tags:
+          - 5.2.11
+          
 
       - name: 5.2.12 - Ensure PermitUserEnvironment is disabled
         lineinfile:
@@ -2076,6 +2224,14 @@
         notify:  restart sshd
         tags:
           - 5.2.12
+      
+      - name: 5.2.12 - Ensure SSH PermitUserEnvironment is disabled
+        ansible.builtin.lineinfile:
+          path: /etc/ssh/sshd_config
+          line: 'PermitUserEnvironment no'
+          insertafter: EOF
+        tags:
+          - 5.2.12  
 
       - name: 5.2.13 - Ensure SSH Idle Timeout is configured ClientAliveInterval
         lineinfile:
@@ -2152,6 +2308,16 @@
         notify:  restart sshd
         tags:
           - 5.2.18
+      
+      - name: 5.2.19 - Ensure SSH MaxSessions is set to 4 or less
+        lineinfile:
+          path: /etc/ssh/sshd_config
+          line: 'MaxSessions 4'
+          state: present
+          insertafter: '^#?UsePAM'
+        notify: restart sshd
+        tags:
+          - 5.2.19
 
       - name: 5.2.19 - Ensure system crypto policy isn't overriden in SSH
         lineinfile:
@@ -2210,6 +2376,18 @@
         when: password_req_digit
     tags:
       - 5.4.1
+      
+      
+      - name: 5.4.1 - Add Minclass rule to pwquality.conf
+        lineinfile:
+          path: /etc/security/pwquality.conf
+          line: 'minclass = 4'
+          state: present
+          insertafter: '^#?minclass'
+    tags:
+      - 5.4.1
+
+      
 
   # Control 5.4.2, Ensure lockout for failed password attempts, requires file replacement
   # skipping
@@ -2220,6 +2398,32 @@
   # Control 5.4.4, Ensure password hashing algorithm is SHA-512, requires file replacement
   # skipping
 
+
+  #- name: Get custom profile directory
+  #  command: "authselect current | awk 'NR == 1 {print $3}' | grep custom/"
+  #  register: custom_profile
+  #  changed_when: false
+  #  tags:
+  #    - 5.4.2
+  
+  #- name: Update faillock configuration
+  #  command: >
+  #    CP={{ custom_profile.stdout }} && 
+  #    for FN in system-auth password-auth; do
+  #      [[ -n $CP ]] && PTF=/etc/authselect/$CP/$FN || PTF=/etc/authselect/$FN
+  #      [[ -n $(grep -E '^\s*auth\s+required\s+pam_faillock.so\s+.*deny=\S+\s*.*$' $PTF) ]] && sed -ri '/pam_faillock.so/s/deny=\S+/deny=5/g' $PTF || sed -ri 's/^\^\s*(auth\s+required\s+pam_faillock\.so\s+)(.*[^{}])(\{.*\}|)$/\1\2 deny=5 \3/' $PTF
+  #      [[ -n $(grep -E '^\s*auth\s+required\s+pam_faillock.so\s+.*unlock_time=\S+\s*.*$' $PTF) ]] && sed -ri '/pam_faillock.so/s/unlock_time=\S+/unlock_time=900/g' $PTF || sed -ri 's/^\s*(auth\s+required\s+pam_faillock\.so\s+)(.*[^{}])(\{.*\}|)$/\1\2 unlock_time=900 \3/' $PTF
+  #    done
+  #  when: custom_profile.stdout is defined
+  #  tags:
+  #    - 5.4.2
+  
+  #- name: Apply authselect changes
+  #  command: "authselect apply-changes"
+  #  tags:
+  #    - 5.4.2
+  
+  
   - name: 5.5.1.1 - Ensure password expiration is {{ password_expire_days }} days or less
     lineinfile:
       dest: /etc/login.defs
@@ -2276,7 +2480,7 @@
       - /etc/profile
     tags:
       - 5.5.3
-
+   
   # Control is actually setting to GID of 0 and the user module takes a group name, not a GID, so have to use usermod
   - name: 5.5.4 - Ensure default group for root is GID 0
     command: /usr/sbin/usermod -g 0 root
@@ -2288,13 +2492,14 @@
     replace:
       path: "{{ item }}"
       replace: "     umask {{ default_umask }}"
-      regexp: '^\s*umask\s*022'
+      regexp: '^\s*umask\s*027'
     loop:
       - /etc/bashrc
       - /etc/profile
     tags:
-      - 5.5.5
-
+      - 5.5.5    
+      
+  
   # 5.5.6,  Ensure root login is restricted to system console
   # not easily automatable because of the various TTYs on a machine
   # Manually verify that only physically secure TTYs are listed  in
