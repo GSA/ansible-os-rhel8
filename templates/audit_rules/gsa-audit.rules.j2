@@ -1,0 +1,54 @@
+-w /etc/selinux -p wa -k MAC-policy
+-w /usr/share/selinux -p wa -k MAC-policy
+-a always,exit -F arch=b64 -S creat,open,openat,truncate,ftruncate -F exit=-EACCES -F auid>={{ min_uid.stdout }} -F auid!=unset -k access
+-a always,exit -F arch=b64 -S creat,open,openat,truncate,ftruncate -F exit=-EPERM -F auid>={{ min_uid.stdout }} -F auid!=unset -k access
+-a always,exit -F arch=b32 -S creat,open,openat,truncate,ftruncate -F exit=-EACCES -F auid>={{ min_uid.stdout }} -F auid!=unset -k access
+-a always,exit -F arch=b32 -S creat,open,openat,truncate,ftruncate -F exit=-EPERM -F auid>={{ min_uid.stdout }} -F auid!=unset -k access
+-a always,exit -F arch=b64 -S chmod,fchmod,fchmodat -F auid>={{ min_uid.stdout }} -F auid!=unset -F key=perm_mod
+-a always,exit -F arch=b64 -S chown,fchown,lchown,fchownat -F auid>={{ min_uid.stdout }} -F auid!=unset -F key=perm_mod
+-a always,exit -F arch=b32 -S chmod,fchmod,fchmodat -F auid>={{ min_uid.stdout }} -F auid!=unset -F key=perm_mod
+-a always,exit -F arch=b32 -S lchown,fchown,chown,fchownat -F auid>={{ min_uid.stdout }} -F auid!=unset -F key=perm_mod
+-a always,exit -F arch=b64 -S setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F auid>={{ min_uid.stdout }} -F auid!=unset -F key=perm_mod
+-a always,exit -F arch=b32 -S setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F auid>={{ min_uid.stdout }} -F auid!=unset -F key=perm_mod
+-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k time-change
+-a always,exit -F arch=b32 -S adjtimex -S settimeofday -S stime -k time-change
+-a always,exit -F arch=b64 -S clock_settime -k time-change
+-a always,exit -F arch=b32 -S clock_settime -k time-change
+-w /etc/localtime -p wa -k time-change
+-a always,exit -F arch=b64 -S rename,unlink,unlinkat,renameat -F auid>={{ min_uid.stdout }} -F auid!=unset -F key=delete
+-a always,exit -F arch=b32 -S rename,unlink,unlinkat,renameat -F auid>={{ min_uid.stdout }} -F auid!=unset -F key=delete
+-a always,exit -F arch=b64 -S mount -F auid>={{ min_uid.stdout }} -F auid!=unset -k mounts
+-a always,exit -F arch=b32 -S mount -F auid>={{ min_uid.stdout }} -F auid!=unset -k mounts
+-a always,exit -F arch=b64 -C euid!=uid -F auid!=unset -S execve -k user_emulation
+-a always,exit -F arch=b32 -C euid!=uid -F auid!=unset -S execve -k user_emulation
+-a always,exit -F path=/usr/bin/chcon -F perm=x -F auid>={{ min_uid.stdout }} -F auid!=unset -k perm_chng
+-a always,exit -F path=/usr/bin/setfacl -F perm=x -F auid>={{ min_uid.stdout }} -F auid!=unset -k perm_chng
+-a always,exit -F path=/usr/bin/chacl -F perm=x -F auid>={{ min_uid.stdout }} -F auid!=unset -k perm_chng
+-a always,exit -F path=/usr/sbin/usermod -F perm=x -F auid>={{ min_uid.stdout }} -F auid!=unset -k usermod
+-a always,exit -F arch=b64 -S init_module,finit_module,delete_module,create_module,query_module -F auid>={{ min_uid.stdout }} -F auid!=unset -k kernel_modules
+-a always,exit -F path=/usr/bin/kmod -F perm=x -F auid>={{ min_uid.stdout }} -F auid!=unset -k kernel_modules
+-w /var/run/faillock -p wa -k logins
+-w /var/log/lastlog -p wa -k logins
+-w /sbin/insmod -p x -k modules
+-w /sbin/rmmod -p x -k modules
+-w /sbin/modprobe -p x -k modules
+-a always,exit -F arch=b64 -S init_module -S delete_module -k modules
+-a always,exit -F arch=b64 -S sethostname,setdomainname -k system-locale
+-a always,exit -F arch=b32 -S sethostname,setdomainname -k system-locale
+-w /etc/issue -p wa -k system-locale
+-w /etc/issue.net -p wa -k system-locale
+-w /etc/hosts -p wa -k system-locale
+-w /etc/sysconfig/network -p wa -k system-locale
+-w /etc/sysconfig/network-scripts/ -p wa -k system-locale
+-w /var/run/utmp -p wa -k session
+-w /var/log/wtmp -p wa -k session
+-w /var/log/btmp -p wa -k session
+-w /etc/sudoers -p wa -k scope
+-w /etc/sudoers.d -p wa -k scope
+-w /var/log/sudoers -p wa -k actions
+-w /etc/group -p wa -k identity
+-w /etc/passwd -p wa -k identity
+-w /etc/gshadow -p wa -k identity
+-w /etc/shadow -p wa -k identity
+-w /etc/security/opasswd -p wa -k identity
+-e 2

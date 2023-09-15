@@ -13,7 +13,8 @@ apparmor_level: "enforce"     # Set all profiles in /etc/apparmor.d/* to this le
 # Network Time Services
 time_service: "chrony"          # Linux: Option for RHEL7/Ubuntu only. RHEL8 only ships with chrony and this variable is not used
                                 # Linux: Choices are 'ntp' or chrony'. For Ubuntu, this can also accept 'none' as an option to use only systemd timedatectl
-time_server: "2.rhel.pool.ntp.org" # Linux: Time server for ntp, chrony, or timedatectl
+##time_server: "2.rhel.pool.ntp.org" # Linux: Time server for ntp, chrony, or timedatectl
+time_server: "10.0.0.2"
 time_operators:                 # Windows: Users that can set the system time
   - "Administrators"
   - "LOCAL SERVICE"
@@ -51,7 +52,7 @@ graphical_interface: false      # Whether to disable the GDM greeter service. Th
 # Rsyslog service
 log_host: false                 # Linux: Whether this machine will host rsyslog messages for other machines
 log_port: 514                   # Linux: Port to listen to RSYSLOG messages on (if log_host is true)
-log_file_size: 8                # Linux: log file size. RHEL default is 8MB, control has no default
+log_file_size: 32                # Linux: log file size. RHEL default is 8MB, control has no default
 #rsyslog_file:                  # Linux: Uncomment to copy file listed to /etc/rsyslog.d
 
 # network security settings
