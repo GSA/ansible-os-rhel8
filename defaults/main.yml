@@ -63,7 +63,7 @@ firewalld_default_zone: public  # Linux: default firwall zone
 motd_file: "banner"             # Linux: File location by default in 'files' directory
 issue_file: "issue"             # Linux: File location by default in 'files' directory
 issue.net_file: "issue"         # Linux: File location by default in 'files' diretory
-ipv6_disable: true              # Common: Set to true to disable ipv6 support on host
+ipv6_disable: false              # Common: Set to false to enable ipv6 support on host
 
 # SSH Server settings
 ssh_log_level: INFO             # Linux: Control is INFO or VERBOSE. Stricter is not approved and more verbose exposes user info
