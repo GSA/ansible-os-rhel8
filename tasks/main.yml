@@ -1488,7 +1488,7 @@
       replace:
         path: /etc/default/grub
         regexp: '^GRUB_CMDLINE_LINUX="'
-        replace: 'GRUB_CMDLINE_LINUX="ipv6.disable=1 '
+        replace: 'GRUB_CMDLINE_LINUX="ipv6.disable=0' ##Enabled ipv6
       notify: rebuild grub
       when: not ipv6_disable_grub.found and ipv6_disable
 
