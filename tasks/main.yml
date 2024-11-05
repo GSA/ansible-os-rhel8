@@ -3,7 +3,10 @@
 # Collect the packages installed on the system so we can check agains them later
 - name: Collect package list
   package_facts:
-    manager: auto
+    manager: 
+      - auto
+      - pkg
+      - pkg_info
   tags:
     - always
 
